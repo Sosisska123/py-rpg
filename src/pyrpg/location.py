@@ -1,6 +1,13 @@
-__all__ = [
-    "Location"
-]
+from argparse import Action
+from dataclasses import dataclass
 
+__all__ = ["Location"]
+
+
+@dataclass(frozen=True)
 class Location:
-    pass
+    name: str
+    actions: list[Action]
+
+    def add_action(self, action: Action) -> None:
+        self.actions.append(action)
