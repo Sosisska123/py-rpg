@@ -16,16 +16,16 @@ class Player:
         self,
         name: str,
         location: Location,
-        health: Health | Any | None = None,
-        money: Bank | Any | None = None,
+        health: Health | Any = Health,
+        money: Bank | Any = Bank,
     ) -> None:
-        h = Health()
-        b = Bank()
-
         self._name = name
         self._location = location
-        self._health = h
-        self._money = b
+        self._health = health
+        self._money = money
+
+    def current_location(self) -> Location:
+        return self._location
 
     @property
     def name(self) -> str:
