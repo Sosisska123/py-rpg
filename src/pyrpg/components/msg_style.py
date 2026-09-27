@@ -1,6 +1,7 @@
 __all__ = [
     "AngleBracketMsgStyle",
     "BaseMsgStyle",
+    "ErrorMsgStyle",
     "NoneMsgStyle",
     "SortedMsgStyle",
 ]
@@ -32,3 +33,8 @@ class SortedMsgStyle(BaseMsgStyle):
         text: str,
     ) -> str:
         return f"  {self.item}. {text}"
+
+
+class ErrorMsgStyle(BaseMsgStyle):
+    def style(self, text: str) -> str:
+        return f">! {text}"
