@@ -1,6 +1,9 @@
 from pathlib import Path
+from typing import Any
 
-from .components.msg_style import MsgStyle
+from .action import Action
+from .components.msg_style import *
+from .location import Location
 from .player import Player
 
 __all__ = ["Game"]
@@ -10,7 +13,7 @@ class Game:
     DEFAULT_SAVE_PATH = Path.joinpath(Path.home(), "rpgmaker", "123")
 
     _is_playing: bool
-    _msg_style: MsgStyle
+    _msg_style: BaseMsgStyle
     _player: Player
 
     _save_path: Path = DEFAULT_SAVE_PATH
@@ -20,12 +23,12 @@ class Game:
     def __init__(
         self,
         player: Player,
-        message_style: MsgStyle = MsgStyle.NONE,
+        message_style: BaseMsgStyle | None,
         save_path: Path | str = DEFAULT_SAVE_PATH,
         auto_capitalize: bool = False,
     ) -> None:
         self._player = player
-        self._msg_style = message_style
+        self._msg_style = message_style or NoneMsgStyle()
         self._save_path = Path(save_path)
         self._auto_capitalize = auto_capitalize
 
@@ -42,22 +45,35 @@ class Game:
 
         return self._is_playing
 
+    def get_current_location(self) -> Location:
+        """Get current location of the player"""
+
+        return self._player.current_location()
+
+    def choice(self, message: str, actions: list[Action]) -> Any:
+        self._print(message)
+
+        sl_style = SortedMsgStyle(0)
+        for i, action in enumerate(actions):
+            sl_style.item = i + 1
+            self._print(action.name, sl_style)
+
+        input()
+
     def print(self, text: str) -> None:
         """Prints provided text with defined style"""
 
         self._print(text=text, custom_style=None)
 
-    def _print(self, text: str, custom_style: MsgStyle | None = None) -> None:
+    def _print(self, text: str, custom_style: BaseMsgStyle | None = None) -> None:
         """Internal print impl. Applies all styles to the given text and prints it"""
 
+        text = text.strip()
+        if not text:
+            return
+
         line_style = custom_style or self._msg_style
-        match line_style:
-            case MsgStyle.NONE:
-                prefix = ""
-            case MsgStyle.ANGLE_BRACKET:
-                prefix = ">"
+        text = "".join([text[0].upper(), text[1:]]) if self._auto_capitalize else text
+        text = line_style.style(text)
 
-        text = text.capitalize() if self._auto_capitalize else text
-
-        line = f"{prefix} {text}"
-        print(line)
+        print(text)

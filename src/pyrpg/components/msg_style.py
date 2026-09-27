@@ -1,8 +1,34 @@
-from enum import Enum
+__all__ = [
+    "AngleBracketMsgStyle",
+    "BaseMsgStyle",
+    "NoneMsgStyle",
+    "SortedMsgStyle",
+]
 
-__all__ = ["MsgStyle"]
+
+class BaseMsgStyle:
+    def style(self, text: str) -> str:
+        raise NotImplementedError
 
 
-class MsgStyle(Enum):
-    NONE = 0
-    ANGLE_BRACKET = 1
+class NoneMsgStyle(BaseMsgStyle):
+    def style(self, text: str) -> str:
+        return text
+
+
+class AngleBracketMsgStyle(BaseMsgStyle):
+    def style(self, text: str) -> str:
+        return f"> {text}"
+
+
+class SortedMsgStyle(BaseMsgStyle):
+    item: int
+
+    def __init__(self, item: int) -> None:
+        self.item = item
+
+    def style(
+        self,
+        text: str,
+    ) -> str:
+        return f"  {self.item}. {text}"
