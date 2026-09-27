@@ -50,15 +50,45 @@ class Game:
 
         return self._player.current_location()
 
-    def choice(self, message: str, actions: list[Action]) -> Any:
-        self._print(message)
+    def choice(
+        self,
+        message: str,
+        actions: list[Action],
+        show_variants: bool = False,
+    ) -> Any:
+        action_names = [variant.name for variant in actions]
+        action_names_str = f" ({', '.join(action_names)})" if show_variants else ""
+        self._print(f"{message}{action_names_str}:")
 
         sl_style = SortedMsgStyle(0)
         for i, action in enumerate(actions):
             sl_style.item = i + 1
             self._print(action.name, sl_style)
 
-        input()
+        while True:
+            usr_input = input("> ")
+            usr_input = usr_input.strip().lower()
+
+            # TODO: fuzzy matching
+            for ac in actions:
+                if usr_input == ac.name.lower():
+                    return ac.code
+
+            try:
+                idx = int(usr_input)
+                if idx < 0:
+                    raise IndexError(f"Negative index {usr_input}")
+                return actions[idx - 1].code
+            except ValueError:
+                self._print(
+                    f"Неверный ввод: варианта «{usr_input}» нет в списке!",
+                    ErrorMsgStyle(),
+                )
+            except IndexError:
+                self._print(
+                    f"Неверный ввод: числа «{usr_input}» нет в списке!",
+                    ErrorMsgStyle(),
+                )
 
     def print(self, text: str) -> None:
         """Prints provided text with defined style"""
