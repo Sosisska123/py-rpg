@@ -42,7 +42,7 @@ class Game:
         return self._is_playing
 
     def get_current_location(self) -> Location:
-        """Get current location of the player"""
+        """Get current `Location` of the player"""
 
         return self._player.current_location()
 
@@ -52,17 +52,30 @@ class Game:
         actions: list[Action],
         show_variants: bool = False,
     ) -> Any:
+        """Ask for the player action from the given `Action's`.
+        Basicly its the `input()` with answer matching and infininte asking loop
+
+        Parameters:
+            message: Text to print before the input. Equivalent to `input(message)`
+            actions: List of available actions
+            show_variants: Print each `Action` name with its sequence number
+
+        Returns:
+            Any: Code (`Action.code`) of selected `Action`
+        """
+
         action_names = [variant.name for variant in actions]
-        action_names_str = f" ({', '.join(action_names)})" if show_variants else ""
+        action_names_str = f" ({', '.join(action_names)})"
         self.print(f"{message}{action_names_str}:")
 
-        sl_style = SortedMsgStyle(0)
-        for i, action in enumerate(actions):
-            sl_style.item = i + 1
-            self.printer.print(action.name, sl_style)
+        if show_variants:
+            sl_style = SortedMsgStyle(0)
+            for i, action in enumerate(actions):
+                sl_style.item = i + 1
+                self.printer.print(action.name, sl_style)
 
         while True:
-            usr_input = input("> ")
+            usr_input = input(">> ")
             usr_input = usr_input.strip().lower()
 
             # TODO: fuzzy matching
@@ -87,6 +100,6 @@ class Game:
                 )
 
     def print(self, text: str):
-        """Prints provided text with default style"""
+        """Prints the provided text with default style"""
 
         self.printer.print(text=text)
