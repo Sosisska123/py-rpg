@@ -88,8 +88,8 @@ class Game:
 
             try:
                 idx = int(usr_input)
-                if idx < 0:
-                    raise IndexError(f"Negative index {usr_input}")
+                if 0 <= idx < len(actions):
+                    raise IndexError()
                 return actions[idx - 1].code
             except ValueError:
                 self.printer.print(
