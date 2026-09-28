@@ -1,3 +1,4 @@
+import time
 from pathlib import Path
 from typing import Any
 
@@ -19,7 +20,9 @@ class Game:
         message_style: BaseMsgStyle | None,
         save_path: Path | str = DEFAULT_SAVE_PATH,
         auto_capitalize: bool = False,
+        timeout: int = 0,
     ) -> None:
+        self.timeout = timeout
         self._is_playing = False
         self._player = player
         self._save_path = Path(save_path)
@@ -102,4 +105,10 @@ class Game:
     def print(self, text: str):
         """Prints the provided text with default style"""
 
+        time.sleep(self.timeout)
         self.printer.print(text=text)
+
+    def set_timeout(self, secs: int):
+        """Set timeout before print message. Works only when single-threaded"""
+
+        self.timeout = secs
