@@ -11,7 +11,7 @@ __all__ = ["Game"]
 
 
 class Game:
-    DEFAULT_SAVE_PATH = Path.joinpath(Path.home(), "rpgmaker", "123")
+    DEFAULT_SAVE_PATH = Path.home() / "rpgmaker" / "123"
 
     def __init__(
         self,
