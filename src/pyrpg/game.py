@@ -1,12 +1,16 @@
 import time
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any
+from typing import Any, ParamSpec, TypeVar
 
 from .action import Action
 from .components.msg_style import *
 from .location import Location
 from .player import Player
 from .printer import Printer
+
+P = ParamSpec("P")
+R = TypeVar("R")
 
 __all__ = ["Game"]
 
@@ -31,13 +35,28 @@ class Game:
             auto_capitalize=auto_capitalize,
         )
 
-    def start(self, message: str = "") -> None:
+    def start(
+        self,
+        game_func: Callable[P, R],
+        message: str = "",
+        *args: P.args,
+        **kwargs: P.kwargs,
+    ) -> None:
         """Starts the game and prints welcome message"""
 
         if message.strip():
             self.print(message)
 
-        self._is_playing = True
+        try:
+            self._is_playing = True
+            game_func(*args, **kwargs)
+        except KeyboardInterrupt:
+            self.printer.print(
+                "Игра прервана. Завершение...",
+                ErrorMsgStyle(),
+            )
+        finally:
+            self._is_playing = False
 
     def is_playing(self) -> bool:
         """Returns the state of the game"""
