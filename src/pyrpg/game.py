@@ -1,12 +1,11 @@
 from pathlib import Path
 from typing import Any
 
-from pyrpg.printer import Printer
-
 from .action import Action
 from .components.msg_style import *
 from .location import Location
 from .player import Player
+from .printer import Printer
 
 __all__ = ["Game"]
 
