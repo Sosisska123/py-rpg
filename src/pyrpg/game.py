@@ -32,7 +32,7 @@ class Game:
     def start(self, message: str = "") -> None:
         """Starts the game and prints welcome message"""
 
-        if not message.strip():
+        if message.strip():
             self.print(message)
 
         self._is_playing = True
