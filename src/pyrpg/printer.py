@@ -17,6 +17,9 @@ class Printer:
 
         self._print(text=text, custom_style=custom_style)
 
+    def print_error(self, text: str):
+        self._print(text=text, custom_style=ErrorMsgStyle())
+
     def _print(self, text: str, custom_style: BaseMsgStyle | None = None) -> None:
         """Internal print impl. Applies all styles to the given text and prints it"""
 
