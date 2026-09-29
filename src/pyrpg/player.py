@@ -30,3 +30,23 @@ class Player:
     @property
     def name(self) -> str:
         return self._name
+
+    @property
+    def location(self) -> str:
+        return repr(self._location)
+
+    @property
+    def health(self) -> str:
+        return repr(self._health)
+
+    @property
+    def money(self) -> str:
+        return repr(self._money)
+
+    def stats(self) -> dict[str, str]:
+        return {
+            "Имя": self.name,
+            "Локация": self.location,
+            "Здоровье": self.health,
+            "Деньги": self.money,
+        }

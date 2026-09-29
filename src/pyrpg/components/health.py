@@ -1,5 +1,8 @@
+from dataclasses import dataclass
+
 __all__ = ["Health"]
 
 
+@dataclass
 class Health:
-    pass
+    value: int | float

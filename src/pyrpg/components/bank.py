@@ -1,5 +1,12 @@
+from dataclasses import dataclass
+
 __all__ = ["Bank"]
 
 
+@dataclass(repr=False)
 class Bank:
-    pass
+    value: int | float
+    currency: str
+
+    def __repr__(self) -> str:
+        return f"{str(self.value).capitalize()} {self.currency}"
