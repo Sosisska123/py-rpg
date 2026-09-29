@@ -1,7 +1,7 @@
 import time
 from collections.abc import Callable
 from pathlib import Path
-from typing import Any, ParamSpec, TypeVar
+from typing import ParamSpec, TypeVar
 
 from .action import Action
 from .components.msg_style import *
@@ -52,16 +52,19 @@ class Game:
             game_func(*args, **kwargs)
         except KeyboardInterrupt:
             self.printer.print(
-                "Игра прервана. Завершение...",
+                "\nИгра прервана. Завершение...",
                 ErrorMsgStyle(),
             )
         finally:
-            self._is_playing = False
+            self.end()
 
     def is_playing(self) -> bool:
         """Returns the state of the game"""
 
         return self._is_playing
+
+    def end(self):
+        self._is_playing = False
 
     def get_current_location(self) -> Location:
         """Get current `Location` of the player"""
@@ -73,9 +76,10 @@ class Game:
         message: str,
         actions: list[Action],
         show_variants: bool = False,
-    ) -> Any:
+    ) -> Action:
         """Ask for the player action from the given `Action's`.
-        Basicly its the `input()` with answer matching and infininte asking loop
+        Basicly its the `input()` with answer matching and infininte asking loop.
+        Supports selecting by index
 
         Parameters:
             message: Text to print before the input. Equivalent to `input(message)`
@@ -83,12 +87,12 @@ class Game:
             show_variants: Print each `Action` name with its sequence number
 
         Returns:
-            Any: Code (`Action.code`) of selected `Action`
+            Action: Selected `Action`
         """
 
-        action_names = [variant.name for variant in actions]
+        action_names = [variant.name.lower() for variant in actions]
         action_names_str = f" ({', '.join(action_names)})"
-        self.print(f"{message}{action_names_str}:")
+        self.print(f"{message}{action_names_str if len(actions) > 0 else ''}:")
 
         if show_variants:
             sl_style = SortedMsgStyle(0)
@@ -103,13 +107,13 @@ class Game:
             # TODO: fuzzy matching
             for ac in actions:
                 if usr_input == ac.name.lower():
-                    return ac.code
+                    return ac
 
             try:
                 idx = int(usr_input)
-                if 0 <= idx < len(actions):
+                if not 0 < idx <= len(actions):
                     raise IndexError()
-                return actions[idx - 1].code
+                return actions[idx - 1]
             except ValueError:
                 self.printer.print(
                     f"Неверный ввод: варианта «{usr_input}» нет в списке!",
