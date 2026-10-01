@@ -1,7 +1,17 @@
-## Run
+## Quick Start
 
-To run use:
+### Use as a Python library
 
-```bash
-python src/__main__.py
+```python
+from pyrpg import *
+
+
+def main(gm: Game):
+    gm.print("Ты находишся в городе")
+
+
+if __name__ == "__main__":
+    game = Game()
+    game.start(main, "Добро пожалуйста", game)
+
 ```
