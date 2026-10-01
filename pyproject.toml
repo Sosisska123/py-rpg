@@ -1,0 +1,7 @@
+[project]
+name = "py-rpg"
+version = "0.1.0"
+description = "Simple console RPG maker"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
