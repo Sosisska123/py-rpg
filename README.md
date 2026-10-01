@@ -1,7 +1,7 @@
 ## Run
+
 To run use:
 
 ```bash
-cd src
-python -m app
+python src/__main__.py
 ```
