@@ -1,7 +1,7 @@
 import time
 from collections.abc import Callable
 from pathlib import Path
-from typing import ParamSpec, TypeVar
+from typing import Concatenate, ParamSpec, TypeVar
 
 from .action import Action
 from .components.msg_style import *
@@ -50,7 +50,7 @@ class Game:
 
     def start(
         self,
-        game_func: Callable[P, R],
+        game_func: Callable[Concatenate["Game", P], R],
         message: str = "",
         *args: P.args,
         **kwargs: P.kwargs,
@@ -69,7 +69,7 @@ class Game:
 
         try:
             self._is_playing = True
-            game_func(*args, **kwargs)
+            game_func(self, *args, **kwargs)
         except KeyboardInterrupt:
             self.printer.print(
                 "\nИгра прервана. Завершение...",
