@@ -1,0 +1,20 @@
+{
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"prettier.useTabs": true,
+	"prettier.semi": false,
+	"prettier.jsxSingleQuote": true,
+	"prettier.singleQuote": true,
+	"prettier.arrowParens": "avoid",
+	"python.REPL.enableREPLSmartSend": false,
+	"python.analysis.typeCheckingMode": "strict",
+	"python.analysis.indexing": true,
+	"python.analysis.autoImportCompletions": true,
+	"[python]": {
+		"editor.defaultFormatter": "charliermarsh.ruff"
+	},
+	"diffEditor.renderSideBySide": true,
+	"diffEditor.useInlineViewWhenSpaceIsLimited": false,
+	"terminal.integrated.initialHint": false,
+	"diffEditor.hideUnchangedRegions.enabled": true,
+	"autoDocstring.docstringFormat": "google"
+}
