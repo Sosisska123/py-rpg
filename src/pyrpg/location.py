@@ -1,17 +1,26 @@
-from dataclasses import dataclass
-
-from .action import Action
+from typing import Any
 
 __all__ = ["Location"]
 
 
-@dataclass(frozen=True)
 class Location:
-    name: str
-    actions: list[Action]
+    _name: str
+    _actions = dict
 
-    def add_action(self, action: Action) -> None:
-        self.actions.append(action)
+    def __init__(self, name: str, actions: dict[Any, Any]) -> None:
+        # TODO: change dict[Any, Any] to a specific type
+
+        self._name = name
+        self._actions = actions
+
+    def enter(self) -> None:
+        pass
+
+    def update(self) -> None:
+        pass
+
+    def exit(self) -> None:
+        pass
 
     def __repr__(self) -> str:
-        return self.name.strip().capitalize()
+        return self._name.strip().capitalize()
