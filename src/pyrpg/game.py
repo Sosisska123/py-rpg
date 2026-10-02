@@ -120,8 +120,7 @@ class Game:
                 self.printer.print(action.name, sl_style)
 
         while True:
-            usr_input = input(">> ")
-            usr_input = usr_input.strip().lower()
+            usr_input = self.input()
 
             # TODO: fuzzy matching
             for ac in actions:
@@ -189,6 +188,11 @@ class Game:
         """
 
         self.print("Введите имя игрока")
+        usr_input = self.input()
+        return Player(name=usr_input, location=start_location)
+
+    def input(self) -> str:
+        # TODO: suppert input style
         usr_input = input(">> ")
         usr_input = usr_input.strip().lower()
-        return Player(name=usr_input, location=start_location)
+        return usr_input
